@@ -4,12 +4,17 @@ const bot = new TelegramApi(token, { polling: true })
 
 
 
-const { gameOptions, again, startGame } = require('./options')
+const { gameOptions, again } = require('./options')
 
 const chats = {}
 
 
-
+const startGame = async (chatId) => {
+    await bot.sendMessage(chatId, `Сейчас я загадаю цифру от 0 до 9, а ты угадай`)
+    const randomNum = Math.floor(Math.random() * 10)
+    chats[chatId] = randomNum
+    await bot.sendMessage(chatId, `Если что правильный ответ ${chats[chatId]}`, gameOptions)
+}
 
 
 

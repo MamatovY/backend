@@ -17,15 +17,10 @@ module.exports = {
                 [{ text: 'Сыграть еще раз.', callback_data: '/again' }]
             ]
         })
-    },
-
-
-    startGame: async (chatId) => {
-        await bot.sendMessage(chatId, `Сейчас я загадаю цифру от 0 до 9, а ты угадай`)
-        const randomNum = Math.floor(Math.random() * 10)
-        chats[chatId] = randomNum
-        await bot.sendMessage(chatId, `Если что правильный ответ ${chats[chatId]}`, gameOptions)
     }
+
+
+
 }
 
 

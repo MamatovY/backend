@@ -5,6 +5,8 @@ const bot = new TelegramApi(token, { polling: true })
 
 
 const { gameOptions, again } = require('./options')
+const Sequelize = require('./db')
+
 
 const chats = {}
 
@@ -32,10 +34,27 @@ bot.setMyCommands([
 
 
 
-const start = () => {
+const start = async () => {
+
+    try {
+        await Sequelize.authenticate()
+        await Sequelize.sync()
+    } catch (e) {
+        console.log('Подключение сломалось', e);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     bot.on('message', async msg => {
-
         const chatId = msg.chat.id
         const text = msg.text
 

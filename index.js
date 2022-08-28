@@ -6,6 +6,7 @@ const bot = new TelegramApi(token, { polling: true })
 
 const { gameOptions, again } = require('./options')
 const Sequelize = require('./db')
+const User = require('./module.js')
 
 
 const chats = {}

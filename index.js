@@ -58,40 +58,61 @@ const start = async () => {
     bot.on('message', async msg => {
         const chatId = msg.chat.id
         const text = msg.text
+        const fromId = msg.from.id
+        const img = msg.photo ? msg.photo[0].file_id : false
+
+
+
+
+
 
         console.log(msg)
 
 
-        if (text === '/start') {
-            await bot.sendMessage(chatId, `Добро пожаловать`)
-            return bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/ea5/382/ea53826d-c192-376a-b766-e5abc535f1c9/7.webp')
-        }
+        if (text) {
+            if (text === '/start') {
+                await bot.sendMessage(chatId, `Добро пожаловать`)
+                return bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/ea5/382/ea53826d-c192-376a-b766-e5abc535f1c9/7.webp')
+            }
 
 
 
-        if (text === '/info') {
-            const fname = msg.from.first_name
-            const lname = msg.from.last_name
-            return bot.sendMessage(chatId, `
-    Твое имя:  ${fname}
-    Фамилия: ${lname}
+            if (text === '/info') {
+                const fname = msg.from.first_name
+                const lname = msg.from.last_name
+                return bot.sendMessage(chatId, `
+    Твое имя:  ${fname ? fname : 'Ты не писал имя'}
+Фамилия: ${lname ? lname : 'Ты не писал Фамилию'}
             `)
+            }
+
+
+
+            if (text === '/game') {
+                return startGame(chatId)
+            }
+
+
+
+            if (text.toUpperCase() === 'КАЙФ') {
+                await bot.sendMessage(chatId, `🏆`)
+                return bot.sendMessage(chatId, `Красавчик мынча кучтуусун`)
+            }
+
+            if (msg.chat.type === 'group') {
+                return bot.sendMessage(fromId, `Ты отправил: ${text}`)
+            }
+
+            return bot.sendMessage(chatId, `Ты отправил: ${text}`)
+        }
+
+        if (img) {
+
+            return bot.sendPhoto(chatId, img)
         }
 
 
 
-        if (text === '/game') {
-            return startGame(chatId)
-        }
-
-
-
-        if (text.toUpperCase() === 'КАЙФ') {
-            await bot.sendMessage(chatId, `🏆`)
-            return bot.sendMessage(chatId, `Красавчик мынча кучтуусун`)
-        }
-
-        return bot.sendMessage(chatId, `Ты отправил: ${text}`)
 
     })
 

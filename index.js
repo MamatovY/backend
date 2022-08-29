@@ -5,6 +5,7 @@ const bot = new TelegramApi(token, { polling: true })
 
 
 const { gameOptions, again } = require('./options')
+const sequelize = require('./db.js')
 
 
 
@@ -37,7 +38,12 @@ bot.setMyCommands([
 const start = async () => {
 
 
-
+    try {
+        await sequelize.authenticate()
+        await sequelize.sync()
+    } catch (error) {
+        console.log('Подключение сломалось', error);
+    }
 
 
 
@@ -78,9 +84,10 @@ const start = async () => {
             return startGame(chatId)
         }
 
+
+
         if (text.toUpperCase() === 'КАЙФ') {
             await bot.sendMessage(chatId, `🏆`)
-
             return bot.sendMessage(chatId, `Красавчик мынча кучтуусун`)
         }
 

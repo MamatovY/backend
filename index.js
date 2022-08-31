@@ -57,7 +57,7 @@ const start = async () => {
 
     bot.on('message', async msg => {
         const chatId = msg.chat.id
-        const text = msg.text
+        const text = msg.text ? msg.text : false
         const fromId = msg.from.id
         const img = msg.photo ? msg.photo[0].file_id : false
 

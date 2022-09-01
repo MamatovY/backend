@@ -1,6 +1,17 @@
 const { Sequelize } = require('sequelize')
 
 
+// module.exports = new Sequelize({
+//     database: 'boty',
+//     username: 'Mamatov',
+//     password: 'root',
+//     host: 'localhost',
+//     port: '5432',
+//     dialect: "postgres",
+
+// });
+
+
 module.exports = new Sequelize({
     database: 'd9edmlvcac9bjl',
     username: 'ecpcyiztmbvaje',

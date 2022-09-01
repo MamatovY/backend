@@ -16,11 +16,11 @@ const UserModel = require('./query.js')
 const chats = {}
 
 
-const startGame = async (chatId) => {
+const startGame = async (chatId, fromId) => {
     await bot.sendMessage(chatId, `Сейчас я загадаю цифру от 0 до 9, а ты угадай`)
     const randomNum = Math.floor(Math.random() * 10)
-    chats[chatId] = randomNum
-    await bot.sendMessage(chatId, `Если что правильный ответ ${chats[chatId]}`, gameOptions)
+    chats[fromId] = randomNum
+    await bot.sendMessage(chatId, `Если что правильный ответ ${chats[fromId]}`, gameOptions)
 }
 
 
@@ -66,18 +66,16 @@ const start = async () => {
         const text = msg.text ? msg.text.replace('@YomaM01_bot', '') : false
         const fromId = msg.from.id
         const img = msg.photo ? msg.photo[0].file_id : false
-        console.log('AA');
+        console.log('AA' + fromId + 'AA' + text);
+        console.log(msg)
 
 
 
         try {
             if (text) {
-                const user = await UserModel.findOne({ chatId })
                 if (text === '/start') {
-                    if (!user) {
-
-                        await UserModel.create({ chatId })
-                    }
+                    await bot.sendMessage(chatId, 'Bd create')
+                    await UserModel.create({ fromId })
 
                     await bot.sendMessage(chatId, `Добро пожаловать`)
                     return bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/ea5/382/ea53826d-c192-376a-b766-e5abc535f1c9/7.webp')
@@ -89,22 +87,24 @@ const start = async () => {
                     const fname = msg.from.first_name
                     const lname = msg.from.last_name
 
-                    const user = await UserModel.findOne({ chatId })
+                    const user = await UserModel.findOne({ fromId })
 
                     return bot.sendMessage(chatId, `
             Твое имя:  ${fname} ${lname ? lname : ''}
 В игре у тебя правильных ответов: ${user.right}
-Не правильных: ${user.wrong}`)
+Не правильных: ${user.wrong}
+Id: ${user.fromId}
+`)
                 }
 
 
 
                 if (text === '/game') {
-                    return startGame(chatId)
+                    return startGame(chatId, fromId)
                 }
 
                 if (text === '/reset') {
-
+                    const user = await UserModel.findOne({ fromId })
                     user.right = 0
                     user.wrong = 0
                     await user.save()
@@ -120,8 +120,9 @@ const start = async () => {
                 }
 
                 if (msg.chat.type === 'group') {
-                    return bot.sendMessage(fromId, `Ты отправил: ${text} `)
+                    await bot.sendMessage(fromId, `Ты отправил: ${text} `)
                 }
+
 
                 return bot.sendMessage(chatId, `Ты отправил: ${text} `)
             }
@@ -138,9 +139,9 @@ const start = async () => {
 
 
 
-        console.log(msg)
 
-        console.log(bot.setMyCommands);
+
+
 
 
 
@@ -158,12 +159,13 @@ const start = async () => {
     bot.on('callback_query', async msg => {
         const data = msg.data
         const chatId = msg.message.chat.id
+        const fromId = msg.from.id
 
         if (data == '/again') {
-            return startGame(chatId)
+            return startGame(chatId, fromId)
         }
 
-        const user = await UserModel.findOne({ chatId })
+        const user = await UserModel.findOne({ fromId })
 
         if (data == chats[chatId]) {
 

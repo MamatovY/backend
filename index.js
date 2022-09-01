@@ -99,6 +99,7 @@ Id: ${user.fromId}
 
 
 
+
                 if (text === '/game') {
                     return startGame(chatId, fromId)
                 }

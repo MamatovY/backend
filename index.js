@@ -74,9 +74,11 @@ const start = async () => {
         try {
             if (text) {
                 if (text === '/start') {
-                    await bot.sendMessage(chatId, 'Bd create')
-                    await UserModel.create({ fromId })
-
+                    const user = await UserModel.findOne({ fromId }) ? UserModel.findOne({ fromId }) : false
+                    if (!user) {
+                        await bot.sendMessage(chatId, 'Bd create')
+                        await UserModel.create({ fromId })
+                    }
                     await bot.sendMessage(chatId, `Добро пожаловать`)
                     return bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/ea5/382/ea53826d-c192-376a-b766-e5abc535f1c9/7.webp')
                 }
@@ -168,13 +170,13 @@ Id: ${user.fromId}
 
         const user = await UserModel.findOne({ fromId })
 
-        if (data == chats[chatId]) {
-
+        if (data == chats[fromId]) {
             user.right += 1
+
             await bot.sendMessage(chatId, `Ты угадал! ${data}
 Хотите сыграть еще раз ? `, again)
-        } else {
 
+        } else {
             user.wrong += 1
             await bot.sendMessage(chatId, `${data} - Не правильно выбери другой...`)
         }

@@ -74,7 +74,7 @@ const start = async () => {
         try {
             if (text) {
                 if (text === '/start') {
-                    const user = await UserModel.findOne({ fromId }) ? UserModel.findOne({ fromId }) : false
+                    const user = await UserModel.findOne({ fromId }) ? await UserModel.findOne({ fromId }) : false
                     if (!user) {
                         await bot.sendMessage(chatId, 'Bd create')
                         await UserModel.create({ fromId })

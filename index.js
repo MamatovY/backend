@@ -66,7 +66,7 @@ const start = async () => {
         const text = msg.text ? msg.text.replace('@YomaM01_bot', '') : false
         const fromId = msg.from.id
         const img = msg.photo ? msg.photo[0].file_id : false
-        console.log('AA' + fromId + 'AA' + text);
+
         console.log(msg)
 
 
@@ -75,6 +75,7 @@ const start = async () => {
             if (text) {
                 if (text === '/start') {
                     const user = await UserModel.findOne({ fromId }) ? await UserModel.findOne({ fromId }) : false
+                    console.log('AAAAAs' + fromId + user);
                     if (!user) {
                         await bot.sendMessage(chatId, 'Bd create')
                         await UserModel.create({ fromId })

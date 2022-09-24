@@ -74,12 +74,12 @@ const start = async () => {
         try {
             if (text) {
                 if (text === '/start') {
-                    console.log('AAAAAs' + fromId + user);
-                    const user = await UserModel.findOne({ fromId })
-                    if (!user) {
-                        await bot.sendMessage(chatId, 'Bd create')
-                        await UserModel.create({ fromId })
-                    }
+                    console.log('AAAAAs' + fromId + 'BBBB');
+                    await bot.sendMessage(chatId, 'Bd create')
+                    await UserModel.create({ dbfromId: fromId })
+
+                    const user = await UserModel.findOne({ where: { dbfromId: fromId } })
+
                     await bot.sendMessage(chatId, `Добро пожаловать`)
                     return bot.sendSticker(chatId, 'https://tlgrm.ru/_/stickers/ea5/382/ea53826d-c192-376a-b766-e5abc535f1c9/7.webp')
                 }

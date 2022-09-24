@@ -1,0 +1,13 @@
+myworks\bot>npm init -y
+myworks\bot>npm i node-telegram-bot-api nodemon
+
+package.json> 
+"scripts":{
+	"dev":"nodemon index.js",
+	"start":"node index.js"
+}
+
+index.js>
+ const TeleramApi=require('node-telegram-bot-api')
+ const token='231234124124124'
+ const bot=new TelegramApi(token, {polling:true})

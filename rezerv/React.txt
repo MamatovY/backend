@@ -1,0 +1,4 @@
+!!!				 npm install -g create-react-app 		!!!
+
+
+myworks\react>npx create-react-app react-new
